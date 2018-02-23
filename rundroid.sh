@@ -32,5 +32,10 @@ done
 vncstart=$((vncselect-vncstart))
 echo "using vnc port:" $vncselect "display:" $vncstart
 
+EMU_ARGS="-avd $IMG -skin 1080x1920 -ports $counter,$((counter+1)) -net-tap tap47"
 
-./tools/emulator -avd $IMG -gpu off -skin 1080x1920 -no-window -noaudio -ports $counter,$((counter+1)) -qemu -vnc :$vncstart
+if [[ ! -z $LOCAL_GUI ]]; then
+  ./tools/emulator $EMU_ARGS -gpu on 
+else
+  ./tools/emulator $EMU_ARGS -gpu off -no-window -noaudio -qemu -vnc :$vncstart
+fi
