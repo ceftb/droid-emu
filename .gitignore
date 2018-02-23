@@ -1,0 +1,12 @@
+amu
+build-tools
+emulator
+licenses
+patcher
+platforms
+platform-tools
+*.zip
+system-images
+tools
+*.sw*
+.knownPackages
