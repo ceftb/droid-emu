@@ -1,5 +1,5 @@
 SDK_VERSION=3859397
-OS := $(shell uname -n)
+OS := $(shell lsb_release -is)
 
 .PHONY: all
 all: | amu
@@ -11,14 +11,15 @@ tools: | sdk-tools-linux-$(SDK_VERSION).zip
 	unzip sdk-tools-linux-$(SDK_VERSION).zip
 
 java:
-ifeq ($(OS), ubuntu)
-	sudo apt-get install openjdk-8-jdk
-else
-ifeq ($(OS), debian)
-	sudo apt-get install openjdk-8-jdk
+ifeq ($(OS), Ubuntu)
+	sudo apt-get install -y openjdk-8-jdk
+else ifeq ($(OS), Debian)
+	sudo apt-get install -y openjdk-8-jdk
+else ifeq ($(OS), Fedora)
+	sudo dnf install -y java-1.8.0-openjdk
 else
 	echo "Install Java 1.8.0"
-endif
+	exit 1
 endif
 
 
