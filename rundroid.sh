@@ -9,4 +9,4 @@ if [[ $IMG = "" ]]; then
   echo "IMG environment variable required"
 fi
 
-./tools/emulator -avd $IMG -gpu on -skin 1080x1920
+./tools/emulator -avd $IMG -gpu off -skin 1080x1920 -no-window -noaudio -port 5554 -qemu -vnc :100
