@@ -10,18 +10,21 @@ sdk-tools-linux-$(SDK_VERSION).zip:
 tools: | sdk-tools-linux-$(SDK_VERSION).zip
 	unzip sdk-tools-linux-$(SDK_VERSION).zip
 
-java:
+prereqs:
 ifeq ($(OS), Ubuntu)
-	sudo apt-get install -y openjdk-8-jdk
+	sudo apt-get install -y unzip openjdk-8-jdk
 else ifeq ($(OS), Debian)
-	sudo apt-get install -y openjdk-8-jdk
+	sudo apt-get install -y unzip openjdk-8-jdk
 else ifeq ($(OS), Fedora)
 	sudo dnf install -y java-1.8.0-openjdk
 else
-	echo "Install Java 1.8.0"
+	echo "Install Java 1.8.0, unzip"
 	exit 1
 endif
 
+
+licenses:
+	yes | ./tools/bin/sdkmanager --licenses
 
 platforms:
 	echo "y" | ./tools/bin/sdkmanager "platforms;android-26"
@@ -33,10 +36,8 @@ platform-tools:
 	echo "y" | ./tools/bin/sdkmanager "platform-tools"
 
 ~/.android/repositories.cfg:
+	mkdir ~/.android
 	touch ~/.android/repositories.cfg
-
-#system-images/android-25/google_apis/arm64-v8a: | tools
-#	echo "y" | ./tools/bin/sdkmanager "system-images;android-25;google_apis;arm64-v8a"
 
 system-images/android-26/google_apis/x86_64: | tools
 	echo "y" | ./tools/bin/sdkmanager "system-images;android-26;google_apis;x86_64"
@@ -53,7 +54,7 @@ amu: pixel-oreo-26-x86_64
 #	./buildavd.sh
 
 .PHONY: pixel-oreo-26-x86_64
-pixel-oreo-26-x86_64: | tools java platforms build-tools platform-tools ~/.android/repositories.cfg tools system-images/android-26/google_apis/x86_64
+pixel-oreo-26-x86_64: | prereqs tools licenses platforms build-tools platform-tools ~/.android/repositories.cfg tools system-images/android-26/google_apis/x86_64
 	DEVICE=pixel \
 	ANDROID_VERSION=8.0.0 \
 	IMAGE_ARCH=x86_64 \
