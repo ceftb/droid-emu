@@ -9,6 +9,12 @@ if [[ $IMG = "" ]]; then
   echo "IMG environment variable required"
 fi
 
+TAP=${TAP:-""}
+
+if [[ $TAP = "" ]]; then
+  echo "TAP environment variable required"
+fi
+
 # The valid ports range is 5554 to 5682
 firstport=5554
 lastport=5682
@@ -32,10 +38,10 @@ done
 vncstart=$((vncselect-vncstart))
 echo "using vnc port:" $vncselect "display:" $vncstart
 
-EMU_ARGS="-avd $IMG -skin 1080x1920 -ports $counter,$((counter+1)) -net-tap tap47"
+EMU_ARGS="-avd $IMG -skin 1080x1920 -ports $counter,$((counter+1)) -net-tap $TAP"
 
 if [[ ! -z $LOCAL_GUI ]]; then
   ./tools/emulator $EMU_ARGS -gpu on 
 else
-  ./tools/emulator $EMU_ARGS -gpu off -no-window -noaudio -qemu -vnc :$vncstart
+  ./tools/emulator $EMU_ARGS -gpu guest -no-window -noaudio -qemu -vnc :$vncstart
 fi
