@@ -35,7 +35,7 @@ build-tools:
 platform-tools:
 	echo "y" | ./tools/bin/sdkmanager "platform-tools"
 
-~/.android/repositories.cfg:
+android-repo:
 	mkdir ~/.android
 	touch ~/.android/repositories.cfg
 
@@ -54,7 +54,7 @@ amu: pixel-oreo-26-x86_64
 #	./buildavd.sh
 
 .PHONY: pixel-oreo-26-x86_64
-pixel-oreo-26-x86_64: | prereqs tools licenses platforms build-tools platform-tools ~/.android/repositories.cfg tools system-images/android-26/google_apis/x86_64
+pixel-oreo-26-x86_64: | prereqs tools android-repo licenses platforms build-tools platform-tools tools system-images/android-26/google_apis/x86_64
 	DEVICE=pixel \
 	ANDROID_VERSION=8.0.0 \
 	IMAGE_ARCH=x86_64 \
